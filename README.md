@@ -161,4 +161,4 @@ If `$discarded` is not defined in your model, **all attributes get saved in the 
 
 # License
 
-This library is published under the [MIT Open Source license](https://opensource.org/licenses/MIT).
+This library is published under the [MIT Open Source license](https://github.com/liamdemafelix/auditor/blob/master/LICENSE).
