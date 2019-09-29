@@ -1,0 +1,21 @@
+{
+    "name": "demafelix/auditor",
+    "description": "A simplified audit trail recorder for Laravel.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Liam Demafelix",
+            "email": "ldemafelix@protonmail.ch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Demafelix\\Auditor\\": "src/"
+        }
+    }
+}
