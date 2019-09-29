@@ -17,7 +17,7 @@ A simple audit trail recorder library for Laravel.
 Install the package via composer:
 
 ```bash
-composer require liamdemafelix/auditor "^v1.0"
+composer require demafelix/auditor "^v1.0"
 ```
 
 This will include the auditor package in your project. Now, publish the configuration file and database migration:
