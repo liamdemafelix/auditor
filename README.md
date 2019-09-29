@@ -1,30 +1,40 @@
 # Laravel Auditor
 
+[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/auditor)](https://github.com/liamdemafelix/auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red) [![bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg](https://img.shields.io/badge/donate-bitcoin-orange)](bitcoin:bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg)
+
 A simple audit trail recorder library for Laravel.
 
-# How to Use
+# Table of Contents
+
+* [Installation](https://github.com/liamdemafelix/auditor#installation)
+* [Accessing the Audit Trail](https://github.com/liamdemafelix/auditor#accessing-the-audit-trail)
+  * [What does it look like?](https://github.com/liamdemafelix/auditor#what-does-it-look-like)
+* [Discarding Data](https://github.com/liamdemafelix/auditor#discarding-data)
+* [License](https://github.com/liamdemafelix/auditor#license)
+
+# Installation
 
 Install the package via composer:
 
-```
-composer require liamdemafelix/auditor
+```bash
+composer require liamdemafelix/auditor "^v1.0"
 ```
 
 This will include the auditor package in your project. Now, publish the configuration file and database migration:
 
-```
+```bash
 php artisan vendor:publish --provider=Demafelix\Auditor\Providers\AuditorServiceProvider
 ```
 
 Next, migrate the newly-published migration file:
 
-```
+```bash
 php artisan migrate
 ```
 
 Finally, edit `config/auditor.php` and add the models you want to enable logging for:
 
-```
+```php
 <?php
 
 return [
@@ -49,9 +59,21 @@ Audit trail records are saved in the `audit_trails` table and is automatically c
 
 ## What does it look like?
 
+The actual record is stored as JSON, so it's easy to do a `json_decode()` on the record and call whatever record you want to use. For example:
+
+```php
+<?php
+
+// ... other code here ... //
+
+$result = json_decode($trail->record);
+$oldFirstName = $result->first_name->old;
+$newFirstName = $result->first_name->new;
+```
+
 Here's a sample of what gets recorded in the `record` column for a `created` action:
 
-```
+```json
 {
    "first_name":{
       "old":null,
@@ -90,7 +112,7 @@ Here's a sample of what gets recorded in the `record` column for a `created` act
 
 On update, it only saves the fields that actually changed (and because we're using Observers, calling `update()` with the same data, it won't record a new entry):
 
-```
+```json
 {
    "first_name":{
       "old":"Liam",
@@ -111,7 +133,7 @@ On update, it only saves the fields that actually changed (and because we're usi
 
 Because your audit trail records are stored in plaintext, you should **never** save sensitive data in the audit trail. To exclude a field from being stored in the audit trail, add a `$discarded` array in your model:
 
-```
+```php
 <?php
 
 namespace App;
