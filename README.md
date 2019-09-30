@@ -1,6 +1,6 @@
 # Laravel Auditor
 
-[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/auditor)](https://github.com/liamdemafelix/auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red) [![bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg](https://img.shields.io/badge/donate-bitcoin-orange)](bitcoin:bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg)
+[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red) [![bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg](https://img.shields.io/badge/donate-bitcoin-orange)](bitcoin:bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg)
 
 A simple audit trail recorder library for Laravel.
 
@@ -17,7 +17,7 @@ A simple audit trail recorder library for Laravel.
 Install the package via composer:
 
 ```bash
-composer require demafelix/auditor "^v1.0"
+composer require demafelix/laravel-auditor "^v1.0"
 ```
 
 This will include the auditor package in your project. Now, publish the configuration file and database migration:
