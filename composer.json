@@ -1,5 +1,5 @@
 {
-    "name": "demafelix/auditor",
+    "name": "demafelix/laravel-auditor",
     "description": "A simplified audit trail recorder for Laravel.",
     "type": "library",
     "license": "MIT",
