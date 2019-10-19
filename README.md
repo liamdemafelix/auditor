@@ -110,7 +110,7 @@ Here's a sample of what gets recorded in the `record` column for a `created` act
 }
 ```
 
-On update, it only saves the fields that actually changed (and because we're using Observers, calling `update()` with the same data, it won't record a new entry):
+On update, it only saves the fields that actually changed (and because we're using Observers, calling `update()` with the same data won't record a new entry):
 
 ```json
 {
