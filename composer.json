@@ -17,5 +17,12 @@
         "psr-4": {
             "Demafelix\\Auditor\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Demafelix\\Auditor\\Providers\\AuditorServiceProvider"
+            ]
+        }
     }
 }
