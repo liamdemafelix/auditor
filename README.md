@@ -4,6 +4,10 @@
 
 A simple audit trail recorder library for Laravel.
 
+> Your database engine must support the JSON data type (`$table->json()`). For MySQL, this means you must have a minimum version of `5.7.8`. For MariaDB, your minimum version should be `10.2.7`.
+>
+> If your database engine does not support the JSON data type, consider changing the migration from `$table->json()` to `$table->longText()`. This is untested but should work in theory.
+
 # Table of Contents
 
 * [Installation](https://github.com/liamdemafelix/auditor#installation)
