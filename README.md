@@ -1,27 +1,21 @@
-# Laravel Auditor
+# demafelix/laravel-auditor
 
 [![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red) [![bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg](https://img.shields.io/badge/donate-bitcoin-orange)](bitcoin:bc1qres8wt48dl8wkyfhug9lyj9mw89tgl8vslndmg)
 
-A simple audit trail recorder library for Laravel.
+`demafelix/laravel-auditor` is a simple model audit trail recorder for Laravel.
 
-> Your database engine must support the JSON data type (`$table->json()`). For MySQL, this means you must have a minimum version of `5.7.8`. For MariaDB, your minimum version should be `10.2.7`.
->
-> If your database engine does not support the JSON data type, consider changing the migration from `$table->json()` to `$table->longText()`. This is untested but should work in theory.
+# Pre-requisites
 
-# Table of Contents
-
-* [Installation](https://github.com/liamdemafelix/auditor#installation)
-* [Accessing the Audit Trail](https://github.com/liamdemafelix/auditor#accessing-the-audit-trail)
-  * [What does it look like?](https://github.com/liamdemafelix/auditor#what-does-it-look-like)
-* [Discarding Data](https://github.com/liamdemafelix/auditor#discarding-data)
-* [License](https://github.com/liamdemafelix/auditor#license)
+* Laravel 6.x
+* MySQL/MariaDB versions that support the `json()` data type equivalent for Laravel (see [https://laravel.com/docs/6.x/migrations#creating-columns](https://laravel.com/docs/6.x/migrations#creating-columns))
+    * Older versions may work by changing `json()` to `longText()`, see note in the Installation Instructions below.
 
 # Installation
 
 Install the package via composer:
 
 ```bash
-composer require demafelix/laravel-auditor "^v1.0"
+composer require demafelix/laravel-auditor
 ```
 
 This will include the auditor package in your project. Now, publish the configuration file and database migration:
@@ -36,32 +30,32 @@ Next, migrate the newly-published migration file:
 php artisan migrate
 ```
 
-Finally, edit `config/auditor.php` and add the models you want to enable logging for:
+> If migrations fail due to an old version of MySQL/MariaDB, change the migration to use `longText()` instead of `json()` instead.
 
-```php
-<?php
+### Hold up, I use a UUID/string instead of an integer for primary keys!
 
-return [
-    /**
-     * Specify the models to watch by providing their
-     * fully-qualified class names below.
-     *
-     * @var array
-     */
+Well, in most cases, that's a [bad idea](https://tomharrisonjr.com/uuid-or-guid-as-primary-keys-be-careful-7b2aa3dcb439). Nevertheless, you may update the data type of the `user_id` field to match your primary key data type. No other change needs to be done, as the logs are stored in JSON.
 
-    'models' => [
-        'App\User', 'App\Product'
-    ]
-];
-```
+# Configuration
 
-And you're done.
+Upon publishing the vendor files (using `php artisan vendor:publish` above), a file named `/config/auditor.php` will be created. Inside, you can edit the following settings:
 
-# Accessing the Audit Trail
+* `models` - An array of models to watch for Eloquent operations for logging.
+* `global_discards` - An array of fields to exclude from logs **globally**. By default, these are:
+    * `password`
+    * `remember_token`
+    * `created_at`
+    * `updated_at`
+    * `deleted_at`
+    * `banned_at`
+        * You may add and delete values in this array to your liking, but we already save the timestamps for the operation so it's pointless to save them in the actual log.
+        * **Never** save sensitive information in plaintext. Sane defaults have been provided, adjust as necessary.
+
+# Records
 
 Audit trail records are saved in the `audit_trails` table and is automatically created upon every successful `created`, `updated` and `deleted` event monitored by an observer. Records are stored in JSON and can be searched via fuzzy search (using `LIKE` direct in the `record` column), or by using Laravel's [`whereJsonContains()`](https://laravel.com/docs/6.x/queries#json-where-clauses) method for more specific results.
 
-## What does it look like?
+### What does it look like?
 
 The actual record is stored as JSON, so it's easy to do a `json_decode()` on the record and call whatever record you want to use. For example:
 
@@ -71,71 +65,54 @@ The actual record is stored as JSON, so it's easy to do a `json_decode()` on the
 // ... other code here ... //
 
 $result = json_decode($trail->record);
-$oldFirstName = $result->first_name->old;
-$newFirstName = $result->first_name->new;
+echo "Old value: " . $result->name->old . "<br>";
+echo "New value: " . $result->name->new;
 ```
 
-Here's a sample of what gets recorded in the `record` column for a `created` action:
+> On update, it only saves the fields that actually changed (and because we're using Observers, calling `update()` with the same data won't record a new entry)
+
+It's clean and coherent, you can modify your spiels to look however you want, since we only store the data and not how it's constructed. In JSON, it looks like the following (an example of a `create` action log):
 
 ```json
-{
-   "first_name":{
-      "old":null,
-      "new":"Liam"
+{ 
+   "name":{ 
+      "old": "John Smith",
+      "new": "Mario Berge"
    },
-   "last_name":{
-      "old":null,
-      "new":"Demafelix"
-   },
-   "email":{
-      "old":null,
-      "new":"liamdemafelix.n@gmail.com"
-   },
-   "mobile":{
-      "old":null,
-      "new":"09560760282"
-   },
-   "role":{
-      "old":null,
-      "new":"2"
-   },
-   "updated_at":{
-      "old":null,
-      "new":"2019-09-29 06:45:06"
-   },
-   "created_at":{
-      "old":null,
-      "new":"2019-09-29 06:45:06"
-   },
-   "user_id":{
-      "old":null,
-      "new":1
-   }
-}
-```
-
-On update, it only saves the fields that actually changed (and because we're using Observers, calling `update()` with the same data won't record a new entry):
-
-```json
-{
-   "first_name":{
-      "old":"Liam",
-      "new":"Test"
-   },
-   "last_name":{
-      "old":"Demafelix",
-      "new":"Change"
-   },
-   "updated_at":{
-      "old":"2019-09-29 06:46:11",
-      "new":"2019-09-29 06:46:14"
+   "email":{ 
+      "old": "john.smith@example.com",
+      "new": "dbergstrom@stokes.biz"
    }
 }
 ```
 
 # Discarding Data
 
-Because your audit trail records are stored in plaintext, you should **never** save sensitive data in the audit trail. To exclude a field from being stored in the audit trail, add a `$discarded` array in your model:
+### Global Discards
+
+You can discard a field name globally by setting it in `/config/auditor.php`.
+
+```php
+<?php
+
+return [
+    /**
+     * Specify fields to discard.
+     * The fields specified in this configuration are discarded for all models.
+     * To make model-specific discards, use the $discarded declaration on your model.
+     *
+     * @var array
+     */
+
+    'global_discards' => [
+        'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at', 'banned_at'
+    ]
+];
+```
+
+### Model-specific Discards
+
+In addition, if you want to discard a field specific to a model, you may add a `public $discarded` declaration in your model:
 
 ```php
 <?php
@@ -161,7 +138,7 @@ class User extends Authenticatable
 }
 ```
 
-If `$discarded` is not defined in your model, **all attributes get saved in the audit trail**. Make sure you add the necessary adjustments to your model.
+**Never** store sensitive data in plaintext. Sane defaults have been provided (see `/config/auditor.php`), adjust as necessary.
 
 # License
 

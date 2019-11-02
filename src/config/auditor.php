@@ -19,6 +19,18 @@ return [
 
     'models' => [
         'App\User',
+    ],
+
+    /**
+     * Specify fields to discard.
+     * The fields specified in this configuration are discarded for all models.
+     * To make model-specific discards, use the $discarded declaration on your model.
+     *
+     * @var array
+     */
+
+    'global_discards' => [
+        'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at', 'banned_at'
     ]
 
 ];

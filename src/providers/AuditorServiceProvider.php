@@ -65,17 +65,23 @@ class AuditorServiceProvider extends ServiceProvider
         // Initialize an instance of $model
         $instance = new $model();
 
-        // Do we have something to strip?
-        if (empty($instance->discarded)) {
-            // Nothing to exclude
-            return $data;
-        }
+        // Convert the data to an array
+        $data = (array) $data;
 
         // Start stripping
-        $data = (array) $data;
+        $globalDiscards = (!empty(config('auditor.global_discards'))) ? config('auditor.global_discards') : [];
+        $modelDiscards = (!empty($instance->discarded)) ? $instance->discarded : [];
         foreach ($data as $key => $value) {
-            if (in_array($key, $instance->discarded)) {
+            // Check the model-specific discards
+            if (in_array($key, $modelDiscards)) {
                 unset($data[$key]);
+            }
+
+            // Check global discards
+            if (!empty($globalDiscards)) {
+                if (in_array($key, $globalDiscards)) {
+                    unset($data[$key]);
+                }
             }
         }
 
