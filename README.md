@@ -1,6 +1,8 @@
 # demafelix/laravel-auditor
 
-[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red) [![bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06](https://img.shields.io/badge/donate-bitcoin-orange)](bitcoin:bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06)
+[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red)
+
+**Throw me some sats**: [bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06](bitcoin:bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06)
 
 `demafelix/laravel-auditor` is a simple model audit trail recorder for Laravel.
 
