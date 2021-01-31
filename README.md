@@ -1,14 +1,14 @@
 # demafelix/laravel-auditor
 
-[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x-red)
+[![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x%20%20to%208.x-red)
 
-**Throw me some sats**: [bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06](bitcoin:bc1quhgxucxrsz6k50yhylv4zgs6vkxe5gplmnwu06)
+**Throw me some sats**: [3AGeUPgJfQXGeBxp8jswVprJ791gVdkqDR](bitcoin:3AGeUPgJfQXGeBxp8jswVprJ791gVdkqDR)
 
 `demafelix/laravel-auditor` is a simple model audit trail recorder for Laravel.
 
 # Pre-requisites
 
-* Laravel 6.x
+* Laravel 6.x - 8.x
 * MySQL/MariaDB versions that support the `json()` data type equivalent for Laravel (see [https://laravel.com/docs/6.x/migrations#creating-columns](https://laravel.com/docs/6.x/migrations#creating-columns))
     * Older versions may work by changing `json()` to `longText()`, see note in the Installation Instructions below.
 
