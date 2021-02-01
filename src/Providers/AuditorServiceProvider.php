@@ -143,8 +143,8 @@ class AuditorServiceProvider extends ServiceProvider
                             'new' => $value
                         ];
                     }
-                    break;
                 }
+                break;
 
             case "delete":
                 // Expect new data to be filled
