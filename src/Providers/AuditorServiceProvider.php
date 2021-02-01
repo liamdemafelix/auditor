@@ -122,18 +122,29 @@ class AuditorServiceProvider extends ServiceProvider
 
             case "update":
                 // Expect old and new data to be filled
-                if (empty($old) || empty($new)) {
-                    throw new \ArgumentCountError("Action `update` expects both old and new data.");
-                }
+                if (empty($new)) {
+                    // Restoring a soft-deleted entry, don't fail here.
+                    foreach ($old as $key => $value) {
+                        $data[$key] = [
+                            'old' => $old[$key],
+                            'new' => '(Entry restored)'
+                        ];
+                    }
+                } else {
+                    // A real update
+                    if (empty($old) || empty($new)) {
+                        throw new \ArgumentCountError("Action `update` expects both old and new data.");
+                    }
 
-                // Process only what changed
-                foreach ($new as $key => $value) {
-                    $data[$key] = [
-                        'old' => $old[$key],
-                        'new' => $value
-                    ];
+                    // Process only what changed
+                    foreach ($new as $key => $value) {
+                        $data[$key] = [
+                            'old' => $old[$key],
+                            'new' => $value
+                        ];
+                    }
+                    break;
                 }
-                break;
 
             case "delete":
                 // Expect new data to be filled
