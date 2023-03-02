@@ -1,3 +1,5 @@
+> This repository and package has been deprecated. Use at your own risk.
+
 # demafelix/laravel-auditor
 
 [![GitHub issues](https://img.shields.io/github/issues/liamdemafelix/laravel-auditor)](https://github.com/liamdemafelix/laravel-auditor/issues) ![](https://img.shields.io/badge/runs%20on-laravel%206.x%20%20to%208.x-red)
